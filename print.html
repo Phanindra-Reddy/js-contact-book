@@ -71,7 +71,7 @@
 
     <section class="container-fluid mt-5 d-flex justify-content-between footer text-center py-1 fixed-bottom">
         <a href="https://phanindra-reddy.github.io/portfolio/" taget="blank">Phanindra Reddy</a>
-        <a onclick="printUserData()" type="button" class="btn btn-outline-primary " href="">Print</a>
+        <a onclick="printUserData()" type="button" class="btn btn-primary " href="">Print</a>
     </section>
 
     <!-- ---------Firebase ---------->
@@ -118,7 +118,7 @@
             if (user) {
                 // User is signed in.
                 uid = user.uid;
-                //getContacts(user.uid);
+                getContacts(user.uid);
             }else{
                 uid = null;
                 window.location.replace("login.html");
@@ -132,13 +132,12 @@
         mainApp.logOut = logOut;
     })();
 
-    function printUserData(){
-
+    function getContacts(uid){
         var contactList = document.getElementById('contactList');
         var eachContactList = '';
 
-        var userId=firebase.auth().currentUser.uid;
-        firebase.database().ref("Contacts/"+userId).orderByChild('name').on('value', function(snapshot){
+        //var userId=firebase.auth().currentUser.uid;
+        firebase.database().ref("Contacts/"+uid).orderByChild('name').on('value', function(snapshot){
             snapshot.forEach(function(childSnapshot) {
             var childKey = childSnapshot.key;
             var childData = childSnapshot.val();
@@ -148,8 +147,16 @@
             })
             contactList.innerHTML = eachContactList;
         })
+    }
+
+    window.onload = function(){
+      this.getContactList();
+    }
+
+    function printUserData(){
         window.print();
     }
+
     </script>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" 
